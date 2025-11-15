@@ -34,3 +34,52 @@ plt.show()
 
 
 
+# The Analysis
+
+## 2. How are in-demand skills trending for Data Analysts?
+
+### Visualize Data
+
+```python
+
+sns.lineplot(data=df_plot,dashes=False,palette='tab10')
+sns.set_theme(style='ticks')
+sns.despine()
+plt.title('trending top skills for data analysts in the us')
+plt.ylabel('likelihood in job postings')
+plt.xlabel('2023')
+plt.legend().remove()
+
+#we neeed our yaxis values to be in percent format
+#therefore with the help of set_major_formatter method we will do it
+
+
+#first get the current axis
+ax=plt.gca()
+#now we will access the yaxis and apply the percent formatter method
+ax.yaxis.set_major_formatter(PercentFormatter(decimals=0))
+
+
+#we need to give the text for each line therefore we will apply a for loop
+#Creates an empty list to store all the text labels
+texts = []
+
+#Loops 5 times (once for each skill line)
+for i in range(5):
+    #For each skill: adds a text label at position x=11.5 (right side), y=the last data point value, with the skill name as text. Saves each label to the list.
+    texts.append(plt.text(11.5, df_plot.iloc[-1,i], df_plot.columns[i]))
+
+#Automatically moves the labels so they don't overlap, and draws thin gray lines connecting labels to their original positions if they were moved
+adjust_text(texts, arrowprops=dict(arrowstyle='-', color='gray', lw=0.5))
+
+```
+
+### Results
+
+![Trending Top Skills for Data Analysts in the US](image-1.png)
+*Bar graph visulizing the trending top skills for data analysts in the US in 2023.*
+
+### Insights:
+- SQL dominates but is declining: SQL consistently appears in about 45-55% of data analyst job postings throughout 2023, making it by far the most in-demand skill. However, it shows a notable downward trend from its January peak of ~54% to around 46% by December, suggesting either market saturation or a shift in job requirements.
+- Excel remains surprisingly resilient: Despite being a traditional tool, Excel holds steady as the second most requested skill at around 40-42% for most of the year. It only dips significantly in the final months (dropping to ~34% in November), which could indicate a seasonal variation or a gradual shift toward more advanced analytics tools.
+- Python and Tableau are neck-and-neck for third place: Both skills hover around 25-30% throughout the year with Python (red line) showing slightly more volatility, including a notable spike in August (~30%) before declining. By year-end, they're nearly tied at about 26-27%, suggesting these visualization and programming skills are similarly valued but haven't yet reached the ubiquity of SQL or Excel.
